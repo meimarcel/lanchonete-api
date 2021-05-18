@@ -2,6 +2,7 @@ package com.marcel.Lanchonete.dto;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -9,9 +10,10 @@ public class OrderDTO {
     @NotEmpty(message="Email do cliente não pode estar vazio")
     @NotNull(message="Campo 'cliente' não encontrado")
     private String client;
-
+    
     @NotEmpty(message="Pedido sem item")
     @NotNull(message="Campo 'items' não encontrado")
+    @Valid
     private List<ItemDTO> items;
 
     public OrderDTO() {

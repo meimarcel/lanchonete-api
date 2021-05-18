@@ -32,7 +32,7 @@ public class Product extends ModelMaster{
     private List<Item> items;
 
     @NotNull(message="Informe se o produto está disponível")
-    private Boolean available = true;
+    private Boolean available;
 
     public Product() {
 

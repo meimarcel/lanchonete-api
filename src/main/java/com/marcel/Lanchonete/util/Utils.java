@@ -23,6 +23,6 @@ public class Utils {
     }
 
     public String generateRandomCode() {
-        return RandomStringUtils.randomAlphabetic(5).toUpperCase();
+        return RandomStringUtils.randomAlphanumeric(5).toUpperCase();
     }
 }

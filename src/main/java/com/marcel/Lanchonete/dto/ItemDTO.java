@@ -1,13 +1,11 @@
 package com.marcel.Lanchonete.dto;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class ItemDTO {
     
-    @NotEmpty(message="Id do produto não pode estar vazio")
-    @NotNull(message="Campo 'product' não encontrado")
+    @NotNull(message="Produto não pode estar vazio")
     private Long product;
 
     @NotNull(message="Quantidade do produto não pode estar vazio")

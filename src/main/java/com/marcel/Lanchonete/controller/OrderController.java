@@ -18,6 +18,7 @@ import com.marcel.Lanchonete.model.Client;
 import com.marcel.Lanchonete.model.Item;
 import com.marcel.Lanchonete.model.Order;
 import com.marcel.Lanchonete.repository.OrderRepository;
+import com.marcel.Lanchonete.util.Utils;
 import com.marcel.Lanchonete.repository.ClientRepository;
 import com.marcel.Lanchonete.error.ResourceNotFoundException;
 import com.marcel.Lanchonete.error.UserNotFoundException;
@@ -68,12 +69,24 @@ public class OrderController {
     @Autowired
     private PagedResourcesAssembler<Order> pagedResourcesAssembler;
 
+    @Autowired
+    private Utils utils;
+
     @PostMapping("/public/order/create")
     public ResponseEntity<?> createOrder(@Valid @RequestBody OrderDTO orderDTO) {
         Client client = clientDAO.findById(orderDTO.getClient())
             .orElseThrow(() -> new UserNotFoundException("Cliente não encontrado."));
+        
         Long lastId = orderDAO.count();
-        Order order = orderHelper.toOrder(orderDTO, client, lastId);
+        String identification = utils.generateRandomCode()+String.valueOf(lastId);
+        
+        Order test = orderDAO.findByIdentification(identification).orElse(null);
+        while(test != null) {
+            identification = utils.generateRandomCode()+String.valueOf(lastId);
+            test = orderDAO.findByIdentification(identification).orElse(null);
+        }
+        
+        Order order = orderHelper.toOrder(orderDTO, client, identification);
 
         List<Item> itemList = new ArrayList<>();
         if(orderDTO.getItems() != null) {
@@ -131,6 +144,18 @@ public class OrderController {
     @GetMapping("/public/order/byId/{id}")
     public ResponseEntity<?> getOrder(@PathVariable("id") Long id, Authentication authentication) {
         Order order = orderDAO.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado."));
+
+        if(authentication == null) {
+            return ResponseEntity.ok(orderAssembler.toModel(order));
+        } else {
+            return ResponseEntity.ok(orderManagerAssembler.toModel(order));
+        }
+    }
+
+    @GetMapping("/public/order/byIdentification/{identification}")
+    public ResponseEntity<?> getOrderByIdentification(@PathVariable("identification") String identification, Authentication authentication) {
+        Order order = orderDAO.findByIdentification(identification)
             .orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado."));
 
         if(authentication == null) {
