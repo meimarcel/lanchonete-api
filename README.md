@@ -19,7 +19,7 @@ Crie uma base de dados para a aplicação utilizando o MySQL8 ou o PostgreSQL.
 CREATE DATABASE lanchonete;
 ```
 
-Configure os valore relacionados ao banco de dados no arquivo **src**/**main**/**resources**/**application.properties**.
+Configure os valores relacionados ao banco de dados no arquivo **src**/**main**/**resources**/**application.properties**.
 
 ```properties
 spring.datasource.url=jdbc:mysql://{seu_host}:{porta}/{base_de_dados}?useSSL=false&allowPublicKeyRetrieval=true
@@ -28,7 +28,7 @@ spring.datasource.password={sua_senha}
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 ```
 
-Para popular o banco com os dados que serão utilizados pela aplicação, descomente a seguinte linha na primeira vez que for rodar o projeto, mas lembre de comentar novamente para não executar os comandos de SQL toda vez que a aplicação for levantada.
+Para popular o banco com os dados que serão utilizados pela aplicação, descomente a seguinte linha na primeira vez que for rodar o projeto, mas lembre-se de comentar novamente para não executar os comandos de SQL toda vez que a aplicação for levantada.
 
 ```properties
 #spring.datasource.initialization-mode=always
